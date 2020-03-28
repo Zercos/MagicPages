@@ -1,5 +1,7 @@
 from django.contrib import admin
+from . import models
 
 # Register your models here
-#
-# test my git, please delete project IT from our program.
+admin.site.register(models.Product)
+admin.site.register(models.ProductTag)
+admin.site.register(models.ProductImage)
