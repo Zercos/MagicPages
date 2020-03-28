@@ -11,6 +11,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ('in_stock', )
     search_fields = ('name', )
     prepopulated_fields = {"slug": ("name",)}
+    autocomplete_fields = ('tags',)
 
 # def __str__ needed to fix autocomplete ( it needs a good string)
 
@@ -26,7 +27,6 @@ class ProductTagAdmin(admin.ModelAdmin):
     list_filter = ('active',)
     search_fields = ('name',)
     prepopulated_fields = {"slug": ("name",)}
-    autocomplete_fields = ('products',)
 
 # def __str__ needed to fix autocomplete ( it needs a good string)
 
