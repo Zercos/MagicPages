@@ -1,8 +1,8 @@
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, ListView
-from django.shortcuts import get_object_or_404
-from main import models
 
+from main import models
 from main.forms import ContactForm
 
 
