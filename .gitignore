@@ -124,7 +124,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-
-media/product-images/*
-media/product-thumbnails/*

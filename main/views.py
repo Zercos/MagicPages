@@ -25,7 +25,7 @@ class ContactView(FormView):
 
 
 class ProductListView(ListView):
-    template_name = "main/product_list.html"
+    template_name = 'main/product_list.html'
     paginate_by = 4
 
     def get_queryset(self):

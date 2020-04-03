@@ -12,9 +12,10 @@ class ProductTagManager(models.Manager):
 
 
 class ProductTag(models.Model):
+    objects = ProductTagManager()
+
     name = models.CharField(max_length=32)
     slug = models.SlugField(max_length=48)
-    objects = ProductTagManager()
     description = models.TextField(blank=True)
     active = models.BooleanField(default=True)
 
@@ -22,10 +23,12 @@ class ProductTag(models.Model):
         return self.name
 
     def natural_key(self):
-        return self.slug,
+        return self.slug
 
 
 class Product(models.Model):
+    objects = ActiveManager()
+
     tags = models.ManyToManyField(ProductTag, blank=True)
     name = models.CharField(max_length=32)
     description = models.TextField(blank=True)
@@ -34,12 +37,9 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     in_stock = models.BooleanField(default=True)
     date_updated = models.DateTimeField(auto_now=True)
-    objects = ActiveManager()
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE
-    )
-    image = models.ImageField(upload_to="product-images")
-    thumbnail = models.ImageField(upload_to="product-thumbnails", null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product-images')
+    thumbnail = models.ImageField(upload_to='product-thumbnails', null=True)
