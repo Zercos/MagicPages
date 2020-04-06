@@ -33,22 +33,23 @@ admin.site.register(models.ProductTag, ProductTagAdmin)
 
 
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('thumbnail_tag', 'product_name')
+    list_display = ('product_name', 'thumbnail_tag')
     readonly_fields = ('thumbnail',)
-    search_fields = ('product_name',)
-
-    def thumbnail_tag(self, obj):
-        if obj.thumbnail:
-            return format_html("<img src='%s'/>" % obj.thumbnail.url)
-        return '-'
-
-    thumbnail_tag.short_description = 'Thumbnail'
+    search_fields = ('product__name',)
+    fieldsets = (
+        (None, {
+            'fields': ('product', 'image')
+        }),)
 
     def product_name(self, obj):
         return obj.product.name
 
-    def __str__(self):
-        return self.name
+    def thumbnail_tag(self, obj):
+        if obj.thumbnail:
+            return format_html(f'<img src="{obj.thumbnail.url}">')
+        return '-'
+
+    thumbnail_tag.short_description = 'Thumbnail'
 
 
-admin.site.register(models.ProductImage)
+admin.site.register(models.ProductImage, ProductImageAdmin)
