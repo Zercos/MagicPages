@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DetailView
 
 from main import models
 from main.forms import ContactForm
@@ -25,7 +25,7 @@ class ContactView(FormView):
 
 
 class ProductListView(ListView):
-    template_name = "main/product_list.html"
+    template_name = 'main/product_list.html'
     paginate_by = 4
 
     def get_queryset(self):
@@ -38,3 +38,7 @@ class ProductListView(ListView):
         else:
             products = models.Product.objects.active()
         return products.order_by('name')
+
+
+class ProductDetailView(DetailView):
+    model = models.Product

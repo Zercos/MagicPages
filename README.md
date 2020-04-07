@@ -10,17 +10,12 @@ The purpose of this project is to develop as a team project, the alternative to 
 
 * Go to project directory and install requirements for development
 ```
-cd MagicPages && pipenv install --dev
+cd MagicPages && pipenv install --dev && pipenv shell
 ```
 
-* Create .env configuration file from example config
+* Create .env and fill with your environment variables configuration file from example config
 ```
-cp .env.example .env
-```
-
-* Enter local credentials for database and other ENV variables values:
-```
-nano .env
+cp config/.env.example config/.env
 ```
 
 * Run development server:
