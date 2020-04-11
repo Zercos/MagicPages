@@ -16,3 +16,6 @@ class TestModels(TestCase):
         created_tag = models.ProductTag.objects.get_by_natural_key('test_genre')
         self.assertEqual(test_tag, created_tag)
 
+    def test_creating_users(self):
+        user = models.User.objects.create(emails='test@mail.com', password='password')
+        self.assertTrue(models.User.objects.get(email='test@mail.com').exists())
