@@ -17,5 +17,5 @@ class TestModels(TestCase):
         self.assertEqual(test_tag, created_tag)
 
     def test_creating_users(self):
-        user = models.User.objects.create(emails='test@mail.com', password='password')
-        self.assertTrue(models.User.objects.get(email='test@mail.com').exists())
+        user = models.User.objects.create_user(email='test@mail.com', password='password')
+        self.assertTrue(models.User.objects.filter(email='test@mail.com').exists())
