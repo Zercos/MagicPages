@@ -144,3 +144,6 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # Configure Crispy
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# User model
+AUTH_USER_MODEL = 'main.User'
