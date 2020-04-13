@@ -3,6 +3,7 @@ Django settings for MagicPages project.
 """
 
 import os
+import sys
 
 import environ
 
@@ -131,9 +132,8 @@ if not DEBUG:
     EMAIL_USE_TLS = env('EMAIL_USE_TLS')
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 else:
-    EMAIL_BACKEND = (
-        "django.core.mail.backends.console.EmailBackend"
-    )
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 FROM_EMAIL = env('FROM_EMAIL')
 LINK_DOMAIN = env('LINK_DOMAIN')
 CUSTOMER_SERVICE_EMAIL = env('CUSTOMER_SERVICE_EMAIL')
