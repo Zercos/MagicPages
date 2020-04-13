@@ -5,8 +5,8 @@ from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm, UsernameField
 from django.core.mail import send_mail
 
-from main import tasks
 from main import models
+from main import tasks
 
 logger = logging.getLogger(__name__)
 
