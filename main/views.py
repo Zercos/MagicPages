@@ -1,9 +1,11 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, ListView, DetailView
 
 from main import models
-from main.forms import ContactForm
+from main.forms import ContactForm, UserCreationForm
 
 
 class HomeView(TemplateView):
@@ -21,7 +23,7 @@ class ContactView(FormView):
 
     def form_valid(self, form):
         form.send_customer_service_email()
-        super().form_valid()
+        return super().form_valid(form)
 
 
 class ProductListView(ListView):
@@ -42,3 +44,23 @@ class ProductListView(ListView):
 
 class ProductDetailView(DetailView):
     model = models.Product
+
+
+class RegistrationView(FormView):
+    form_class = UserCreationForm
+    template_name = 'signup.html'
+
+    def get_success_url(self):
+        redirect = self.request.GET.get('next', '/')
+        return redirect
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        form.save()
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password1']
+        user = authenticate(email=email, password=password)
+        login(self.request, user)
+        form.send_welcome_email()
+        messages.info(self.request, 'You signup successfully')
+        return response

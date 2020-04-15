@@ -2,7 +2,10 @@ import logging
 
 from django import forms
 from django.conf import settings
+from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm, UsernameField
+from django.core.mail import send_mail
 
+from main import models
 from main import tasks
 
 logger = logging.getLogger(__name__)
@@ -16,4 +19,17 @@ class ContactForm(forms.Form):
     def send_customer_service_email(self):
         logger.info(f'Sending email to customer service from {self.cleaned_data["email"]}')
         message = 'From: {}\n{}'.format(self.cleaned_data['name'], self.cleaned_data['content'])
-        tasks.send_mail_to_customer_service.delay('Customer contact mail', message, [settings.CUSTOMER_SERVICE_EMAIL])
+        tasks.send_email.delay('Customer contact mail', message, [settings.CUSTOMER_SERVICE_EMAIL])
+
+
+class UserCreationForm(DjangoUserCreationForm):
+    class Meta(DjangoUserCreationForm):
+        model = models.User
+        fields = ('email',)
+        field_classes = {'email': UsernameField}
+
+    def send_welcome_email(self):
+        logger.info(f'Sending signup email for {self.cleaned_data["email"]}')
+        message = 'Welcome to BookTime'
+        send_mail(subject='BookTime welcome', message=message, from_email='site@booktime.domain',
+                  recipient_list=(self.cleaned_data.get('email'),), fail_silently=True)
