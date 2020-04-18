@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from main import forms
 from main.models import Product, User
+from main.tests.factories import UserFactory
 
 
 class TestViews(TestCase):
@@ -75,3 +76,16 @@ class TestViews(TestCase):
         self.assertTrue(User.objects.filter(email='test@mail.com').exists())
         self.assertTrue(auth.get_user(self.client).is_authenticated)
         mock_send.assert_called()
+
+    def test_get_login_page(self):
+        response = self.client.get(reverse('main:login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
+        self.assertIsInstance(response.context['form'], forms.UserAuthenticationForm)
+
+    def test_user_authentication(self):
+        user = UserFactory(email='user@mail.com', password='password')
+        credentials = dict(email='user@mail.com', password='password')
+        response = self.client.post(reverse('main:login'), credentials)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(auth.get_user(self.client).is_authenticated)

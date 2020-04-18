@@ -21,3 +21,13 @@ class ProductFactory(factory.DjangoModelFactory):
 
     class Meta:
         model = models.Product
+
+
+class UserFactory(factory.DjangoModelFactory):
+    email = factory.Sequence(lambda x: f'email{x}@mail.com')
+    password = 'password'
+    first_name = factory.faker.Faker('first_name')
+    last_name = factory.faker.Faker('last_name')
+
+    class Meta:
+        model = models.User
