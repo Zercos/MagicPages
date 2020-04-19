@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, ListView, DetailView
+from django.contrib.auth.views import LoginView
 
 from main import models
-from main.forms import ContactForm, UserCreationForm
+from main.forms import ContactForm, UserCreationForm, AuthenticationForm
 
 
 class HomeView(TemplateView):
@@ -64,3 +65,8 @@ class RegistrationView(FormView):
         form.send_welcome_email()
         messages.info(self.request, 'You signup successfully')
         return response
+
+
+class UserLoginView(LoginView):
+    template_name = 'login.html'
+    form_class = AuthenticationForm
