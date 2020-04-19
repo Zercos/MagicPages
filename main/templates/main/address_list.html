@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Addresses - {{ block.super }}{% endblock %}
+{% block content %}
+    <h2>List of user Addresses</h2>
+    {% for address in address_list %}
+        <p>
+            {{ address.name }}<br/>
+            {{ address.address1 }}<br/>
+            {{ address.address2 }}<br/>
+            {{ address.zip_code }}<br/>
+            {{ address.city }}<br/>
+            {{ address.get_country_display }}<br/>
+        </p>
+        <p><a href="{% url 'main:address_update' address.id %}" class="btn btn-primary">Update</a></p>
+        <p><a href="{% url 'main:address_delete' address.id %}" class="btn btn-danger">Delete</a></p>
+    {% endfor %}
+    <p><a href="{% url 'main:address_create' %}" class="btn btn-success">Add new address</a></p>
+{% endblock %}

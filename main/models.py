@@ -83,3 +83,17 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
+
+
+class Address(models.Model):
+    COUNTRIES = (('pl', 'Poland'), ('ua', 'Ukraine'), ('us', 'USA'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses')
+    name = models.CharField(max_length=60)
+    address1 = models.CharField('Address line 1', max_length=120)
+    address2 = models.CharField('Address line 2', max_length=120, null=True, blank=True)
+    zip_code = models.CharField(max_length=20)
+    city = models.CharField(max_length=60)
+    country = models.CharField(max_length=5, choices=COUNTRIES)
+
+    def __str__(self):
+        return ', '.join([self.name, self.address1, self.address2, self.zip_code, self.city, self.country])

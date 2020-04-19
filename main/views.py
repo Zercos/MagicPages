@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, FormView, ListView, DetailView
-from django.contrib.auth.views import LoginView
+from django.views.generic import TemplateView, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from main import models
 from main.forms import ContactForm, UserCreationForm, AuthenticationForm
@@ -70,3 +71,40 @@ class RegistrationView(FormView):
 class UserLoginView(LoginView):
     template_name = 'login.html'
     form_class = AuthenticationForm
+
+
+class AddressListView(LoginRequiredMixin, ListView):
+    model = models.Address
+
+    def get_queryset(self):
+        return models.Address.objects.filter(user=self.request.user)
+
+
+class AddressCreateView(LoginRequiredMixin, CreateView):
+    model = models.Address
+    fields = ['name', 'address1', 'address2', 'city', 'zip_code', 'country']
+    success_url = reverse_lazy('main:address_list')
+
+    def form_valid(self, form):
+        address = form.save(commit=False)
+        address.user = self.request.user
+        address.save()
+        return super().form_valid(form)
+
+
+class AddressUpdateView(LoginRequiredMixin, UpdateView):
+    model = models.Address
+    template_name = 'main/address_update.html'
+    fields = ['name', 'address1', 'address2', 'city', 'zip_code', 'country']
+    success_url = reverse_lazy('main:address_list')
+
+    def get_queryset(self):
+        return models.Address.objects.filter(user=self.request.user)
+
+
+class AddressDeleteView(LoginRequiredMixin, DeleteView):
+    model = models.Address
+    success_url = reverse_lazy('main:address_list')
+
+    def get_queryset(self):
+        return models.Address.objects.filter(user=self.request.user)
