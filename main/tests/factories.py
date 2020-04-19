@@ -25,7 +25,7 @@ class ProductFactory(factory.DjangoModelFactory):
 
 class UserFactory(factory.DjangoModelFactory):
     email = factory.Sequence(lambda x: f'email{x}@mail.com')
-    password = 'password'
+    password = factory.PostGenerationMethodCall('set_password', 'password')
     first_name = factory.faker.Faker('first_name')
     last_name = factory.faker.Faker('last_name')
 

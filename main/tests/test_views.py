@@ -81,10 +81,10 @@ class TestViews(TestCase):
         response = self.client.get(reverse('main:login'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'login.html')
-        self.assertIsInstance(response.context['form'], forms.UserAuthenticationForm)
+        self.assertIsInstance(response.context['form'], forms.AuthenticationForm)
 
     def test_user_authentication(self):
-        user = UserFactory(email='user@mail.com', password='password')
+        user = UserFactory(email='user@mail.com')
         credentials = dict(email='user@mail.com', password='password')
         response = self.client.post(reverse('main:login'), credentials)
         self.assertEqual(response.status_code, 302)
