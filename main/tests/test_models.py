@@ -24,3 +24,9 @@ class TestModels(TestCase):
         user = factories.UserFactory()
         factories.AddressFactory(user=user)
         self.assertTrue(models.Address.objects.filter(user=user).exists())
+
+    def test_basket_model(self):
+        user = factories.UserFactory()
+        basket = factories.BasketFactory(user=user)
+        self.assertTrue(models.Basket.objects.filter(user=user).exists())
+        self.assertTrue(basket.is_empty())

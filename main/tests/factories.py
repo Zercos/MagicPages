@@ -44,3 +44,10 @@ class AddressFactory(factory.DjangoModelFactory):
 
     class Meta:
         model = models.Address
+
+
+class BasketFactory(factory.DjangoModelFactory):
+    user = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = models.Basket
