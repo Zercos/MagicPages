@@ -8,7 +8,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from main import models
-from main.forms import ContactForm, UserCreationForm, AuthenticationForm, BasketLineFormSet
+from main.forms import ContactForm, UserCreationForm, AuthenticationForm, BasketLineFormSet, AddressSelectionForm
 
 
 class HomeView(TemplateView):
@@ -136,3 +136,21 @@ def manage_basket(request):
     else:
         form = BasketLineFormSet(instance=request.basket)
     return render(request, 'basket.html', {'formset': form})
+
+
+class AddressSelectionView(FormView):
+    template_name = 'address_select.html'
+    form_class = AddressSelectionForm
+    success_url = reverse_lazy('checkout_done')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        del self.request.session['basket_id']
+        basket = self.request.basket
+        basket.create_order(billing_address=form.cleaned_data['billing_address'],
+                            shipping_address=form.cleaned_data['shipping_address'])
+        return super().form_valid(form)

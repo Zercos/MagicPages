@@ -40,7 +40,9 @@
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     {% if request.basket %}<span class="badge">{{ request.basket.count }}</span>{% endif %}
                 </a>
-                {% include "shopping_basket.html" %}
+                {% if request.basket %}
+                    {% include "shopping_basket.html" %}
+                {% endif %}
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'main:logout' %}">
