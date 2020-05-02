@@ -17,5 +17,16 @@ class TestModels(TestCase):
         self.assertEqual(test_tag, created_tag)
 
     def test_creating_users(self):
-        user = models.User.objects.create_user(email='test@mail.com', password='password')
+        factories.UserFactory(email='test@mail.com', password='password')
         self.assertTrue(models.User.objects.filter(email='test@mail.com').exists())
+
+    def test_create_user_address(self):
+        user = factories.UserFactory()
+        factories.AddressFactory(user=user)
+        self.assertTrue(models.Address.objects.filter(user=user).exists())
+
+    def test_basket_model(self):
+        user = factories.UserFactory()
+        basket = factories.BasketFactory(user=user)
+        self.assertTrue(models.Basket.objects.filter(user=user).exists())
+        self.assertTrue(basket.is_empty())

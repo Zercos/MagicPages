@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.core.validators import MinValueValidator
 from django.db import models
 
 
@@ -83,3 +84,37 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
+
+
+class Address(models.Model):
+    COUNTRIES = (('pl', 'Poland'), ('ua', 'Ukraine'), ('us', 'USA'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses')
+    name = models.CharField(max_length=60)
+    address1 = models.CharField('Address line 1', max_length=120)
+    address2 = models.CharField('Address line 2', max_length=120, null=True, blank=True)
+    zip_code = models.CharField(max_length=20)
+    city = models.CharField(max_length=60)
+    country = models.CharField(max_length=5, choices=COUNTRIES)
+
+    def __str__(self):
+        return ', '.join([self.name, self.address1, self.address2, self.zip_code, self.city, self.country])
+
+
+class Basket(models.Model):
+    OPEN = 10
+    SUBMITTED = 20
+    STATUSES = ((OPEN, 'Open'), (SUBMITTED, 'Submitted'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    status = models.IntegerField(choices=STATUSES, default=OPEN)
+
+    def is_empty(self):
+        return self.basketline_set.all().count() == 0
+
+    def count(self):
+        return sum(i.quantity for i in self.basketline_set.all())
+
+
+class BasketLine(models.Model):
+    basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
