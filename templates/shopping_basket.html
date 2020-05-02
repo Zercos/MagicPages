@@ -1,60 +1,19 @@
 <ul class="dropdown-menu dropdown-cart" role="menu">
-    <li>
-        <span class="item">
-            <span class="item-left">
-                <img src="http://lorempixel.com/50/50/" alt=""/>
-                <span class="item-info">
-                    <span>Item name</span>
-                    <span>23$</span>
+    {% for line in request.basket.basketline_set.all %}
+         <li>
+            <span class="item">
+                <span class="item-left">
+                    <span class="item-info">
+                        <span>{{ line.product.name }} - {{ line.quantity }}</span>
+                        <span>{{ line.sum_price }} PLN</span>
+                    </span>
+                </span>
+                <span class="item-right">
+                    <button class="btn btn-xs btn-danger pull-right">x</button>
                 </span>
             </span>
-            <span class="item-right">
-                <button class="btn btn-xs btn-danger pull-right">x</button>
-            </span>
-        </span>
-    </li>
-    <li>
-        <span class="item">
-            <span class="item-left">
-                <img src="http://lorempixel.com/50/50/" alt=""/>
-                <span class="item-info">
-                    <span>Item name</span>
-                    <span>23$</span>
-                </span>
-            </span>
-            <span class="item-right">
-                <button class="btn btn-xs btn-danger pull-right">x</button>
-            </span>
-        </span>
-    </li>
-    <li>
-        <span class="item">
-            <span class="item-left">
-                <img src="http://lorempixel.com/50/50/" alt=""/>
-                <span class="item-info">
-                    <span>Item name</span>
-                    <span>23$</span>
-                </span>
-            </span>
-            <span class="item-right">
-                <button class="btn btn-xs btn-danger pull-right">x</button>
-            </span>
-        </span>
-    </li>
-    <li>
-        <span class="item">
-            <span class="item-left">
-                <img src="http://lorempixel.com/50/50/" alt=""/>
-                <span class="item-info">
-                    <span>Item name</span>
-                    <span>23$</span>
-                </span>
-            </span>
-            <span class="item-right">
-                <button class="btn btn-xs btn-danger pull-right">x</button>
-            </span>
-        </span>
-    </li>
+        </li>
+    {% endfor %}
     <li class="divider"></li>
-    <li><a class="text-center" href="">View Cart</a></li>
+    <li><a class="text-center" href="{% url 'main:manage_basket' %}">Manage Basket</a></li>
 </ul>
