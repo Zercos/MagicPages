@@ -3,6 +3,7 @@ Django settings for MagicPages project.
 """
 
 import os
+import sys
 
 import environ
 
@@ -45,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'main.middlewares.basket_middleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -131,9 +133,8 @@ if not DEBUG:
     EMAIL_USE_TLS = env('EMAIL_USE_TLS')
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 else:
-    EMAIL_BACKEND = (
-        "django.core.mail.backends.console.EmailBackend"
-    )
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 FROM_EMAIL = env('FROM_EMAIL')
 LINK_DOMAIN = env('LINK_DOMAIN')
 CUSTOMER_SERVICE_EMAIL = env('CUSTOMER_SERVICE_EMAIL')
@@ -147,3 +148,28 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # User model
 AUTH_USER_MODEL = 'main.User'
+
+# Login
+LOGIN_URL = 'main:login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'},
+        'simple': {'format': '[%(asctime)s] %(levelname)s %(message)s'},
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+            'formatter': 'simple'
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
