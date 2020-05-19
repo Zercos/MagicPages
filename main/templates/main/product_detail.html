@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}product.name - {{ block.super }} {% endblock %}
+{% block title %}{{ product.name }} - {{ block.super }} {% endblock %}
 {% block content %}
     <h1>Product</h1>
     <table class="table">
@@ -11,7 +11,7 @@
             <th>Cover images</th>
             <td>
                 {% for image in product.productimage_set.all %}
-                    <img src="{{ image.thumbnail.url }}" alt="cover">
+                    <img src="{{ image.thumbnail.url }}" alt="cover" class="product-detail">
                 {% endfor %}
             </td>
         </tr>

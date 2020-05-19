@@ -7,9 +7,9 @@
         <h2>Select the billing and shipping address</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p | crispy }}
+            {{ form }}
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a class="btn btn-primary" href="{% url 'users:address_create' %}">Add new address</a>
+            <a class="btn btn-primary" href="{% url 'main:address_create' %}">Add new address</a>
         </form>
     </div>
 {% endblock %}

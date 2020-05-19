@@ -2,61 +2,30 @@
 
 {% block title %}Home - {{ block.super }} {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header bg-primary">BLACK FRIDAY DEAL</div>
-                    <div class="card-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive"
-                                                style="width:100%" alt="Image"></div>
-                    <div class="card-footer">Buy 50 mobiles and get a gift card</div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header">BLACK FRIDAY DEAL</div>
-                    <div class="card-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive"
-                                                style="width:100%" alt="Image"></div>
-                    <div class="card-footer">Buy 50 mobiles and get a gift card</div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header">BLACK FRIDAY DEAL</div>
-                    <div class="card-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive"
-                                                style="width:100%" alt="Image"></div>
-                    <div class="card-footer">Buy 50 mobiles and get a gift card</div>
-                </div>
-            </div>
-        </div>
-    </div><br>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header">BLACK FRIDAY DEAL</div>
-                    <div class="card-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive"
-                                                style="width:100%" alt="Image"></div>
-                    <div class="card-footer">Buy 50 mobiles and get a gift card</div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header">BLACK FRIDAY DEAL</div>
-                    <div class="card-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive"
-                                                style="width:100%" alt="Image"></div>
-                    <div class="card-footer">Buy 50 mobiles and get a gift card</div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header">BLACK FRIDAY DEAL</div>
-                    <div class="card-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive"
-                                                style="width:100%" alt="Image"></div>
-                    <div class="card-footer">Buy 50 mobiles and get a gift card</div>
-                </div>
+    <div class="container py-5" style="padding-bottom: 0 !important; padding-top: 0 !important;">
+        <div class="row text-center mb-5">
+            <div class="col-lg-7 mx-auto">
+                <h1 class="display-4">Newest offers</h1>
             </div>
         </div>
     </div>
+    <div class="container">
+        {% for pack in products_list %}
+            <div class="row" style="margin-bottom: 30px;">
+                {% for product in pack %}
+                    <div class="col-sm-4">
+                        <div class="card">
+                                <div class="card-header bg-custom-product-card">
+                                    <a style="color: #212529;" href="{% url 'main:product' product.slug %}">{{ product.name }}</a>
+                                </div>
+                                <div class="card-body card-body-product-image">
+                                    <img src="{{ product.productimage_set.first.thumbnail.url }}" class="img-responsive"
+                                         alt="{{ product.name }}"></div>
+                                <div class="card-footer">PLN: {{ product.price }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div><br>
 {% endblock %}
