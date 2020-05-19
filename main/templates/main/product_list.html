@@ -1,16 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>products</h1>
-    {% for product in page_obj %}
-        <p>{{ product.name }}</p>
-        <p><a href="{% url 'main:product' product.slug %}">See it here</a></p>
-        {% if not forloop.last %}
-            <hr>
-        {% endif %}
-    {% endfor %}
+    <div class="container py-5">
+        <div class="row text-center mb-5">
+            <div class="col-lg-7 mx-auto">
+                <h1 class="display-4">Product List</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- List group-->
+                <ul class="list-group shadow">
+                    {% for product in page_obj %}
+                        <li class="list-group-item">
+                            <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                                <div class="media-body order-2 order-lg-1">
+                                    <a href="{% url 'main:product' product.slug %}" style="color: #212529;">
+                                        <h5 class="mt-0 font-weight-bold mb-2">{{ product.name }}</h5>
+                                    </a>
+                                    <p class="font-italic text-muted mb-0 small">{{ product.description }}</p>
+                                    <div class="d-flex align-items-center justify-content-between mt-1">
+                                        <h6 class="font-weight-bold my-2">PLN {{ product.price }}</h6>
+                                    </div>
+                                    <p><a href="{% url 'main:add_to_basket' %}?product_id={{ product.id }}"
+                                          class="btn btn-success">Add to basket</a></p>
+                                </div>
+                                <img src="{{ product.productimage_set.first.thumbnail.url }}"
+                                     alt="{{ product.name }}" width="200" class="ml-lg-5 order-1 order-lg-2">
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
     <nav>
-        <ul class="pagination">
+        <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>

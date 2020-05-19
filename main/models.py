@@ -102,7 +102,9 @@ class Address(models.Model):
     country = models.CharField(max_length=5, choices=COUNTRIES)
 
     def __str__(self):
-        return ', '.join([self.name, self.address1, self.address2, self.zip_code, self.city, self.country])
+        if not self.name:
+            return super().__str__()
+        return ', '.join([self.name, self.address1, self.address2 or '', self.zip_code, self.city, self.country])
 
 
 class Basket(models.Model):
@@ -149,6 +151,10 @@ class Basket(models.Model):
         self.save()
         return order
 
+    @property
+    def full_price(self):
+        return reduce(lambda accum, line: accum + line.sum_price, self.basketline_set.all(), 0)
+
 
 class BasketLine(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
@@ -157,7 +163,7 @@ class BasketLine(models.Model):
 
     @property
     def sum_price(self):
-        return reduce(lambda accum, _: accum + self.product.price, range(self.quantity))
+        return reduce(lambda accum, _: accum + self.product.price, range(self.quantity), 0)
 
 
 class Order(models.Model):

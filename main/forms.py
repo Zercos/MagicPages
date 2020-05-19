@@ -70,5 +70,5 @@ class AddressSelectionForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         queryset = models.Address.objects.filter(user=user)
-        self.fields['shipping_address'] = queryset
-        self.fields['billing_address'] = queryset
+        self.fields['shipping_address'].queryset = queryset
+        self.fields['billing_address'].queryset = queryset
