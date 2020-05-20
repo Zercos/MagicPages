@@ -8,7 +8,7 @@ factory-boy = "*"
 
 [packages]
 django = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 django-environ = "*"
 pillow = "*"
 django-extensions = "*"
@@ -16,7 +16,10 @@ django-crispy-forms = "*"
 djangorestframework = "*"
 celery = {extras = ["redis"],version = "*"}
 django-celery-results = "*"
-
+pydotplus = "*"
+ipython = "*"
+werkzeug = "*"
+django-webpack-loader = "*"
 
 [requires]
 python_version = "3.8"

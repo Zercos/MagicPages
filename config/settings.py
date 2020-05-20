@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webpack_loader',
+    'django_extensions',
     'django_celery_results',
     'main.apps.MainConfig',
     'crispy_forms',
