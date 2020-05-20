@@ -26,6 +26,7 @@ django-filter = "*"
 django-tables2 = "*"
 django-widget-tweaks = "*"
 weasyprint = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.8"
