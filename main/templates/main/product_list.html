@@ -1,39 +1,102 @@
 {% extends "base.html" %}
-
 {% block content %}
     <h1>products</h1>
-    {% for product in page_obj %}
-        <p>{{ product.name }}</p>
-        <p><a href="{% url 'main:product' product.slug %}">See it here</a></p>
-        {% if not forloop.last %}
-            <hr>
-        {% endif %}
-    {% endfor %}
-    <nav>
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Previous</a>
-                </li>
-            {% endif %}
-            {% for pagenum in page_obj.paginator.page_range %}
-                <li class="page-item{% if page_obj.number == pagenum %} active{% endif %}">
-                    <a class="page-link" href="?page={{ pagenum }}">{{ pagenum }}</a>
-                </li>
-            {% endfor %}
-            {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <td>{{ object.name }}</td>
+        </tr>
+        <tr>
+            <th>Cover images</th>
+            <td>
+                <div id="imagebox">
+                    Loading...
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Tags</th>
+            <td></td>
+        </tr>
+        <tr>
+            <th>In stock</th>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Uploaded</th>
+            <td></td>
+        </tr>
+
+
+</table>
 {% endblock content %}
+
+{% block js %}
+<script
+        src="https://unpkg.com/react@16/umd/react.production.min.js">
+</script>
+<script
+    src="https://unpkg.com/react-dom@16/umd/react-dom.production.
+    min.js">
+</script>
+
+<style type="text/css" media="screen">
+    .image{
+        margin: 10px;
+        display: inline-block;
+    }
+</style>
+<script>
+const e=React.createElement;
+
+class ImageBox extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            currentImage: this.props.imageStart
+        }
+    }
+click(image){
+        this.setState({
+            currentImage: image
+        });
+}
+
+render(){
+    const images = this.props.images.map((i)=>
+        e('div', {className: "image", key: i.id},
+            e('img', {onClick: this.click.bind(this, i),
+                width: "100",
+                src: i.thumbnail}),
+        ),
+    );
+    return e('div', {className: "gallery"},
+        e('div', {className: "current-image"},
+            e('img',{src: this.state.currentImage.image})
+        ),
+        images)
+    }
+}
+document.addEventListener("DOMContentLoaded",
+    function(event) {
+        var images = [
+        {% for image in object.productimage_set.all %}
+            {"image": "{{ image.image.url|safe }}",
+                "thumbnail": "{{ image.thumbnail.url|safe }}"},
+        {% endfor %}
+        ]
+        ReactDOM.render(
+        e(ImageBox, {images: images, imageStart: images[0]}),
+            document.getElementById('imagebox')
+        );
+    });
+</script>
+{% endblock %}

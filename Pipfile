@@ -16,7 +16,7 @@ django-crispy-forms = "*"
 djangorestframework = "*"
 celery = {extras = ["redis"],version = "*"}
 django-celery-results = "*"
-
+selenium = "*"
 
 [requires]
 python_version = "3.8"
