@@ -1,19 +1,21 @@
-<ul class="dropdown-menu dropdown-cart" role="menu">
-    {% for line in request.basket.basketline_set.all %}
-         <li>
-            <span class="item">
-                <span class="item-left">
-                    <span class="item-info">
-                        <span>{{ line.product.name }} - {{ line.quantity }}</span>
-                        <span>{{ line.sum_price }} PLN</span>
-                    </span>
-                </span>
-                <span class="item-right">
-                    <button class="btn btn-xs btn-danger pull-right">x</button>
-                </span>
-            </span>
-        </li>
-    {% endfor %}
-    <li class="divider"></li>
-    <li><a class="text-center" href="{% url 'main:manage_basket' %}">Manage Basket</a></li>
-</ul>
+<div class="dropdown-menu dropdown-cart" role="menu">
+    <table>
+        {% for line in request.basket.basketline_set.all %}
+            <tr class="item">
+                <a href="{% url 'main:product' line.product.slug %}">
+                <td class="item-left">
+                    <img class="basket-item-img" src="{{ line.product.productimage_set.first.thumbnail.url }}"
+                         alt="cover">
+                </td>
+                <td class="item-info">
+                    <span>{{ line.product.name }} - {{ line.quantity }}</span>
+                    <span>{{ line.sum_price }} PLN</span>
+                </td>
+                </a>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="divider"></div>
+    <div style="padding:3px 10px; margin: 3px;">Full price: {{ request.basket.full_price }}PLN</div>
+    <div style="padding:3px 10px; margin: 3px;"><a class="text-center btn btn-success" href="{% url 'main:manage_basket' %}">Manage Basket</a></div>
+</div>

@@ -14,6 +14,13 @@ from main.forms import ContactForm, UserCreationForm, AuthenticationForm, Basket
 class HomeView(TemplateView):
     template_name = 'home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = models.Product.objects.active()
+        pack = products.order_by('name').all()[:6]
+        context['products_list'] = [pack[:3], pack[3:]]
+        return context
+
 
 class AboutUsView(TemplateView):
     template_name = 'about.html'
@@ -138,10 +145,10 @@ def manage_basket(request):
     return render(request, 'basket.html', {'formset': form})
 
 
-class AddressSelectionView(FormView):
+class AddressSelectionView(LoginRequiredMixin, FormView):
     template_name = 'address_select.html'
     form_class = AddressSelectionForm
-    success_url = reverse_lazy('checkout_done')
+    success_url = reverse_lazy('main:order_done')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
