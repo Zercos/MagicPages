@@ -20,6 +20,8 @@ pydotplus = "*"
 ipython = "*"
 werkzeug = "*"
 django-webpack-loader = "*"
+django-debug-toolbar = "*"
+toolbar = "*"
 
 [requires]
 python_version = "3.8"

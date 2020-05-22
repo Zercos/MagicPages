@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'django_extensions',
     'django_celery_results',
+    'debug_toolbar',
     'main.apps.MainConfig',
     'crispy_forms',
 ]
@@ -48,8 +49,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'main.middlewares.basket_middleware'
+    'main.middlewares.basket_middleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
+
+INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'config.urls'
 
