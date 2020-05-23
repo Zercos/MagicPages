@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'debug_toolbar',
     'django_tables2',
+    'widget_tweaks',
     'main.apps.MainConfig',
     'crispy_forms',
 ]
