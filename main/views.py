@@ -171,7 +171,7 @@ class OrderFilter(django_filters.FilterSet):
         fields = {
             'user__email': ['icontains'],
             'status': ['exact'],
-            'date_updated': ['gt', 'lt'],
+            #'date_updated': ['gt', 'lt'],
             'date_added': ['gt', 'lt'],
         }
 

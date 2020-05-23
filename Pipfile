@@ -9,6 +9,7 @@ factory-boy = "*"
 [packages]
 django = "*"
 psycopg2-binary = "*"
+psycopg2="*"
 django-environ = "*"
 pillow = "*"
 django-extensions = "*"

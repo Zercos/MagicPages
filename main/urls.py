@@ -22,6 +22,6 @@ urlpatterns = [
     path('add-to-basket/', views.add_to_basket, name='add_to_basket'),
     path('manage-basket/', views.manage_basket, name='manage_basket'),
     path('select-address/', views.AddressSelectionView.as_view(), name='address_select'),
-    path('order-done/', TemplateView.as_view(template_name='order_done.html'), name='address_select'),
+    path('order-done/', TemplateView.as_view(template_name='order_done.html'), name='order_done'),
     path('order-dashboard/', views.OrderView.as_view(), name="order_dashboard"),
 ]
