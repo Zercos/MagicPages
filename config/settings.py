@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_celery_results',
     'debug_toolbar',
+    'django_tables2',
     'main.apps.MainConfig',
     'crispy_forms',
 ]
@@ -179,3 +180,6 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap.html'

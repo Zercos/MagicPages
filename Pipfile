@@ -22,6 +22,8 @@ werkzeug = "*"
 django-webpack-loader = "*"
 django-debug-toolbar = "*"
 toolbar = "*"
+django-filter = "*"
+django-tables2 = "*"
 
 [requires]
 python_version = "3.8"
