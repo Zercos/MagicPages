@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
-env(INTERNAL_IPS)
+INTERNAL_IPS = env('INTERNAL_IPS')
 
 ROOT_URLCONF = 'config.urls'
 
