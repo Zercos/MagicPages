@@ -33,7 +33,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webpack_loader',
+    'django_extensions',
     'django_celery_results',
+    'debug_toolbar',
+    'django_tables2',
+    'widget_tweaks',
     'main.apps.MainConfig',
     'crispy_forms',
 ]
@@ -46,8 +51,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'main.middlewares.basket_middleware'
+    'main.middlewares.basket_middleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
+
+INTERNAL_IPS = env('INTERNAL_IPS')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -173,3 +181,6 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap.html'
