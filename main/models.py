@@ -90,6 +90,15 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
     objects = UserManager()
 
+    @property
+    def is_employee(self):
+        return self.is_active and (self.is_superuser or self.is_staff and self.groups.filter(name='Employees').exists())
+
+    @property
+    def is_dispatcher(self):
+        return self.is_active and (
+                self.is_superuser or self.is_staff and self.groups.filter(name='Dispatchers').exists())
+
 
 class Address(models.Model):
     COUNTRIES = (('pl', 'Poland'), ('ua', 'Ukraine'), ('us', 'USA'))
@@ -189,7 +198,7 @@ class Order(models.Model):
     shipping_city = models.CharField(max_length=60)
     shipping_country = models.CharField(max_length=5)
 
-    date_update = models.DateTimeField(auto_now=True)
+    date_updated = models.DateTimeField(auto_now=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
 
