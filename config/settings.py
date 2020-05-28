@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'main.apps.MainConfig',
     'crispy_forms',
+    'webpack_loader',
 ]
 
 MIDDLEWARE = [
@@ -172,4 +173,11 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'INFO',
     },
+}
+
+WEBPACK_LOADER = { 'DEFAULT':
+    {
+    'BUNDLE_DIR_NAME': 'bundles/',
+    'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats. json'),
+    }
 }
