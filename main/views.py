@@ -1,14 +1,14 @@
+import django_filters
+from django import forms as django_forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
+from django.db import models as django_models
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
-from django import forms as django_forms
-from django.db import models as django_models
-import django_filters
 from django_filters.views import FilterView
 
 from main import models
@@ -185,7 +185,7 @@ class OrderFilter(django_filters.FilterSet):
         filter_overrides = {
             django_models.DateTimeField: {
                 'filter_class': django_filters.DateFilter,
-                'extra': lambda f:{
+                'extra': lambda f: {
                     'widget': DateInput
                 }
             }
