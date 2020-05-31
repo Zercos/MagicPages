@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_tables2',
     'widget_tweaks',
+    'rest_framework',
     'main.apps.MainConfig',
     'crispy_forms',
 ]
