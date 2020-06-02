@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'rest_framework',
     'main.apps.MainConfig',
-    'crispy_forms',
-    'webpack_loader',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -189,6 +188,6 @@ DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap.html'
 WEBPACK_LOADER = { 'DEFAULT':
     {
     'BUNDLE_DIR_NAME': 'bundles/',
-    'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats. json'),
+    'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
