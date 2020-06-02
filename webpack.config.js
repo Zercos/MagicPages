@@ -10,7 +10,7 @@ module.exports = {
         new BundleTracker({filename: './webpack-stats.json'}),
     ], output:{
         filename: '[name].bundle.js',
-        path: path.resolve(dirname, 'main/static/bundles')
+        path: path.resolve(__dirname, 'main/static/bundles')
     }
 };
 

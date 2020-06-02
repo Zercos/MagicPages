@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}product.name - {{ block.super }} {% endblock %}
+{% block title %}{{ product.name }} - {{ block.super }} {% endblock %}
 {% load render_bundle from webpack_loader %}
 {% block content %}
     <h1>Product</h1>
@@ -11,9 +11,7 @@
         <tr>
             <th>Cover images</th>
             <td>
-                {% for image in product.productimage_set.all %}
-                    <img src="{{ image.thumbnail.url }}" alt="cover">
-                {% endfor %}
+                <div id="imagebox">Loading...</div>
             </td>
         </tr>
         <tr>
@@ -100,7 +98,7 @@ document.addEventListener("DOMContentLoaded",
         );
     });
 </script>
-    {% render_bundle 'imageswitcher" js' %}
+    {% render_bundle 'imageswitcher' 'js' %}
     <script>
         document.addEventListener("DOMContentLoaded", function
             (event){
