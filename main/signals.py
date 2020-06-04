@@ -4,8 +4,9 @@ from io import BytesIO
 from PIL import Image
 from django.contrib.auth.signals import user_logged_in
 from django.core.files.base import ContentFile
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from .models import OrderLine, Order
 
 from main.models import ProductImage, Basket
 
@@ -49,3 +50,13 @@ def merge_basket_if_found(sender, user, request, **kwargs):
             anonymous_basket.user = user
             anonymous_basket.save()
             logger.info(f'Assigned user to basket {anonymous_basket.id}')
+
+@receiver(post_save, sender=OrderLine)
+def orderline_to_order_status(sender, instance, **kwargs):
+    if not instance.order.lines.filter(status__lt=OrderLine.SENT).exists():
+        logger.info(
+            "All lines for order %d have been processed. Marking as done.",
+            instance.order.id,
+        )
+        instance.order.status = Order.DONE
+        instance.order.save()

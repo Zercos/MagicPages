@@ -14,7 +14,7 @@
                     {{ form | crispy }}
                 </p>
             {% endfor %}
-            <button class="btn btn-default" type="submit">Update basket</button>
+            <button class="btn btn-outline-secondary" type="submit">Update basket</button>
             {% if user.is_authenticated %}
                 <a href="{% url 'main:address_select' %}" class="btn btn-primary">Place order</a>
             {% else %}

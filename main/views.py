@@ -1,11 +1,15 @@
+import django_filters
+from django import forms as django_forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
+from django.db import models as django_models
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django_filters.views import FilterView
 
 from main import models
 from main.forms import ContactForm, UserCreationForm, AuthenticationForm, BasketLineFormSet, AddressSelectionForm
@@ -13,6 +17,13 @@ from main.forms import ContactForm, UserCreationForm, AuthenticationForm, Basket
 
 class HomeView(TemplateView):
     template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = models.Product.objects.active()
+        pack = products.order_by('name').all()[:6]
+        context['products_list'] = [pack[:3], pack[3:]]
+        return context
 
 
 class AboutUsView(TemplateView):
@@ -138,10 +149,10 @@ def manage_basket(request):
     return render(request, 'basket.html', {'formset': form})
 
 
-class AddressSelectionView(FormView):
+class AddressSelectionView(LoginRequiredMixin, FormView):
     template_name = 'address_select.html'
     form_class = AddressSelectionForm
-    success_url = reverse_lazy('checkout_done')
+    success_url = reverse_lazy('main:order_done')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -154,3 +165,36 @@ class AddressSelectionView(FormView):
         basket.create_order(billing_address=form.cleaned_data['billing_address'],
                             shipping_address=form.cleaned_data['shipping_address'])
         return super().form_valid(form)
+
+
+class DateInput(django_forms.DateInput):
+    input_type = 'date'
+
+
+class OrderFilter(django_filters.FilterSet):
+    class Meta:
+        model = models.Order
+
+        fields = {
+            'user__email': ['icontains'],
+            'status': ['exact'],
+            'date_updated': ['gt', 'lt'],
+            'date_added': ['gt', 'lt'],
+        }
+
+        filter_overrides = {
+            django_models.DateTimeField: {
+                'filter_class': django_filters.DateFilter,
+                'extra': lambda f: {
+                    'widget': DateInput
+                }
+            }
+        }
+
+
+class OrderView(UserPassesTestMixin, FilterView):
+    filterset_class = OrderFilter
+    login_url = reverse_lazy('main:login')
+
+    def test_func(self):
+        return self.request.user.is_staff is True

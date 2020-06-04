@@ -1,10 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from main import endpoints
 from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView
 
 from main import views
 
 app_name = 'main'
+
+router = routers.DefaultRouter()
+router.register(r'orderlines', endpoints.PaidOrderLineViewSet)
+router.register(r'orders', endpoints.PaidOrderViewSet)
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
@@ -22,5 +28,7 @@ urlpatterns = [
     path('add-to-basket/', views.add_to_basket, name='add_to_basket'),
     path('manage-basket/', views.manage_basket, name='manage_basket'),
     path('select-address/', views.AddressSelectionView.as_view(), name='address_select'),
-    path('order-done/', TemplateView.as_view(template_name='order_done.html'), name='address_select'),
+    path('order-done/', TemplateView.as_view(template_name='order_done.html'), name='order_done'),
+    path("order-dashboard/", views.OrderView.as_view(), name='order_dashboard'),
+    path('api-auth/', include('rest_framework.urls')),
 ]

@@ -90,6 +90,15 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
     objects = UserManager()
 
+    @property
+    def is_employee(self):
+        return self.is_active and (self.is_superuser or self.is_staff and self.groups.filter(name='Employees').exists())
+
+    @property
+    def is_dispatcher(self):
+        return self.is_active and (
+                self.is_superuser or self.is_staff and self.groups.filter(name='Dispatchers').exists())
+
 
 class Address(models.Model):
     COUNTRIES = (('pl', 'Poland'), ('ua', 'Ukraine'), ('us', 'USA'))
@@ -102,7 +111,9 @@ class Address(models.Model):
     country = models.CharField(max_length=5, choices=COUNTRIES)
 
     def __str__(self):
-        return ', '.join([self.name, self.address1, self.address2, self.zip_code, self.city, self.country])
+        if not self.name:
+            return super().__str__()
+        return ', '.join([self.name, self.address1, self.address2 or '', self.zip_code, self.city, self.country])
 
 
 class Basket(models.Model):
@@ -149,6 +160,10 @@ class Basket(models.Model):
         self.save()
         return order
 
+    @property
+    def full_price(self):
+        return reduce(lambda accum, line: accum + line.sum_price, self.basketline_set.all(), 0)
+
 
 class BasketLine(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
@@ -157,7 +172,7 @@ class BasketLine(models.Model):
 
     @property
     def sum_price(self):
-        return reduce(lambda accum, _: accum + self.product.price, range(self.quantity))
+        return reduce(lambda accum, _: accum + self.product.price, range(self.quantity), 0)
 
 
 class Order(models.Model):
@@ -183,7 +198,7 @@ class Order(models.Model):
     shipping_city = models.CharField(max_length=60)
     shipping_country = models.CharField(max_length=5)
 
-    date_update = models.DateTimeField(auto_now=True)
+    date_updated = models.DateTimeField(auto_now=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
 
